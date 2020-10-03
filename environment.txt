@@ -1,0 +1,24 @@
+cuda : 10.1
+cudnn :7
+
+python3 : python3.6.9 ~ /usr/lib/python3.6/
+	tensorflow-gpu=2.2.0
+	matplotlib=3.2.1
+	tensorboard=2.2.2
+	scipy=1.4.1
+	protobuf=3.12.2
+pip3(conda) : 20.1.1
+
+===================================
+apt-get update && apt-get install vim git feh tmux tzdata python3 python3-pip libsm6 libxrender-dev libgl1-mesa-glx vim-gui-common
+pip3 install --upgrade pip
+pip3 install tensorflow-gpu==2.2.0 --use-feature=2020-resolver
+pip3 install tensorflow_plugin_profile opencv-python matplotlib easydict packaging
+
+>>>.bashrc
+export LD_LIBRARY_PATH=/usr/local/cuda-10.1/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-10.1/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/cuda-10.1/bin:$PATH
+
+>>check!
+/sbin/ldconfig -N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) | grep libcupti
