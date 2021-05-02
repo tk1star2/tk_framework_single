@@ -28,6 +28,8 @@ pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/uff/uff-0.6.5-py2.py3-none-any.whl
 pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/graphsurgeon/graphsurgeon-0.4.1-py2.py3-none-any.whl
 
 #======================================================
+alias TK='cd /home/tkay/Desktop/WORKSPACE/tk_framework_single'
+
 >>.bashrc : CUDA-10.1
 export LD_LIBRARY_PATH=/usr/local/cuda-10.1/extras/CUPTI/lib64:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-10.1/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
