@@ -1,0 +1,50 @@
+cuda : 10.2
+cudnn : 8.1.0.77
+
+python3 : python3.6.9 (/usr/lib/python3.6)
+	tensorflow-gpu= [tensorflow 2.1.0<=version is not suportted for cuda10.2]
+	tensorboard=2.4.0
+	opencv-python=4.4.0.46
+	matplotlib=3.3.3
+	easydict=1.9
+	packaging=20.4
+	scipy=1.5.4
+	onnx=1.8.0
+	
+	torch=
+	scikit-image
+pip3(conda) : 20.2.4
+#======================================================
+apt-get update && apt-get install vim git feh curl tmux tzdata python3 python3-pip libsm6 libxrender-dev libgl1-mesa-glx vim-gui-common libgtk2.0-dev cmake libgtk-3-dev libtbb2
+
+pip3 install --upgrade pip
+pip3 install tensorflow-gpu==2.3.1 tensorboard_plugin_profile tensorflow_addons tf2onnx --use-feature=2020-resolver
+pip3 install torch torchvision tensorboard
+pip3 install opencv-python matplotlib easydict packaging scipy onnx scikit-image pyyaml requests tqdm
+
+<DOWNLOAD TensorRT-7.0.0.11>
+pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/python/tensorrt-7.0.0.11-cp36-none-linux_x86_64.whl
+pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/uff/uff-0.6.5-py2.py3-none-any.whl
+pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/graphsurgeon/graphsurgeon-0.4.1-py2.py3-none-any.whl
+
+#======================================================
+>>.bashrc : CUDA-10.1
+export LD_LIBRARY_PATH=/usr/local/cuda-10.1/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-10.1/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/cuda-10.1/bin:$PATH
+
+>>.bashrc : CUDA-10.2
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/cuda-10.2/bin:$PATH
+
+>>.bashrc : TensorRT -----------must CUDA 10.2, 11.0, 11.1
+export LD_LIBRARY_PATH=/root/DOWNLOAD/TensorRT-7.0.0.11:$LD_LIBRARY_PATH
+cp ~/DOWNLOAD/TensorRT-7.0.0.11/bin/trtexec /usr/bin/
+cp ~/DOWNLOAD/TensorRT-7.0.0.11/targets/x86_64-linux-gnu/lib/lib* /usr/local/cuda-10.2/targets/x86_64-linux/lib/
+
+>>CHECK
+/sbin/ldconfig -N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) | grep libcupti
+#======================================================
+
+#apt-get install --no-install-recommends libnvinfer-dev=7.0.0-1+cuda10.2 libnvinfer7=7.0.0-1+cuda10.2 libnvinfer-plugin7=7.0.0-1+cuda10.2
+#apt-get install --no-install-recommends libnvinfer-dev=6.0.1-1+cuda10.1 libnvinfer6=6.0.1-1+cuda10.1 libnvinfer-plugin6=6.0.1-1+cuda10.1
