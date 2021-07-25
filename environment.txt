@@ -57,3 +57,9 @@ cp ~/DOWNLOAD/TensorRT-7.0.0.11/targets/x86_64-linux-gnu/lib/lib* /usr/local/cud
 
 #apt-get install --no-install-recommends libnvinfer-dev=7.0.0-1+cuda10.2 libnvinfer7=7.0.0-1+cuda10.2 libnvinfer-plugin7=7.0.0-1+cuda10.2
 #apt-get install --no-install-recommends libnvinfer-dev=6.0.1-1+cuda10.1 libnvinfer6=6.0.1-1+cuda10.1 libnvinfer-plugin6=6.0.1-1+cuda10.1
+
+
+#======================================================JAVA ENVIORNMENT
+sudo apt-get install -y openjdk-11-jdk
+/etc/environment : $JAVA_HOME="/usr/lib/jvm/java-11-openjdk-arm64"
+
