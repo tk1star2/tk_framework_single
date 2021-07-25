@@ -1,24 +1,59 @@
-cuda : 10.1
-cudnn :7
+cuda : 10.2
+cudnn : 8.1.0.77
 
-python3 : python3.6.9 ~ /usr/lib/python3.6/
-	tensorflow-gpu=2.2.0
-	matplotlib=3.2.1
-	tensorboard=2.2.2
-	scipy=1.4.1
-	protobuf=3.12.2
-pip3(conda) : 20.1.1
+python3 : python3.6.9 (/usr/lib/python3.6)
+	tensorflow-gpu=2.3.1 [tensorflow 2.1.0<=version is not supported for cuda10.2]
+	tensorboard=2.4.0
+	opencv-python=4.4.0.46
+	matplotlib=3.3.3
+	easydict=1.9
+	packaging=20.4
+	scipy=1.5.4
+	onnx=1.8.0
+	
+	torch=
+	scikit-image
+pip3(conda) : 20.2.4
+#======================================================
+apt-get update -y && apt-get install -y vim git feh tmux tzdata python3 python3-pip libsm6 libxrender-dev libgl1-mesa-glx vim-gui-common libgtk2.0-dev cmake libgtk-3-dev libtbb2 libgtk2.0-dev pkg-config libprotobuf-dev protobuf-compiler gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools libxine2-dev qt5-default libnss3 libjson-c-dev libjsoncpp-dev build-essential tree wget curl
 
-===================================
-apt-get update && apt-get install vim git feh tmux tzdata python3 python3-pip libsm6 libxrender-dev libgl1-mesa-glx vim-gui-common
 pip3 install --upgrade pip
-pip3 install tensorflow-gpu==2.2.0 --use-feature=2020-resolver
-pip3 install tensorboard_plugin_profile opencv-python matplotlib easydict packaging
 
->>>.bashrc
+#tensorflow
+pip3 install tensorflow-gpu==2.3.1 tensorboard_plugin_profile opencv-python matplotlib easydict packaging tensorflow_addons scipy onnx tf2onnx scikit-image --use-feature=2020-resolver
+
+#pytorch
+pip3 install torch torchvision tensorboard 
+pip3 install opencv-python matplotlib easydict packaging scipy onnx scikit-image pyyaml requests tqdm
+
+<DOWNLOAD TensorRT-7.0.0.11>
+pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/python/tensorrt-7.0.0.11-cp36-none-linux_x86_64.whl
+pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/uff/uff-0.6.5-py2.py3-none-any.whl
+pip3 install /root/DOWNLOAD/TensorRT-7.0.0.11/graphsurgeon/graphsurgeon-0.4.1-py2.py3-none-any.whl
+
+#======================================================
+alias TK='cd /home/tkay/Desktop/WORKSPACE/tk_framework_single'
+
+>>.bashrc : CUDA-10.1
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-10.1/extras/CUPTI/lib64:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-10.1/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
 export PATH=/usr/local/cuda-10.1/bin:$PATH
 
->>check!
+>>.bashrc : CUDA-10.2
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-10.2/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/cuda-10.2/bin:$PATH
+
+>>.bashrc : TensorRT -----------must CUDA 10.2, 11.0, 11.1
+export LD_LIBRARY_PATH=/root/DOWNLOAD/TensorRT-7.0.0.11:$LD_LIBRARY_PATH
+cp ~/DOWNLOAD/TensorRT-7.0.0.11/bin/trtexec /usr/bin/
+cp ~/DOWNLOAD/TensorRT-7.0.0.11/targets/x86_64-linux-gnu/lib/lib* /usr/local/cuda-10.2/targets/x86_64-linux/lib/
+
+>>CHECK
 /sbin/ldconfig -N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) | grep libcupti
+#======================================================
+
+#apt-get install --no-install-recommends libnvinfer-dev=7.0.0-1+cuda10.2 libnvinfer7=7.0.0-1+cuda10.2 libnvinfer-plugin7=7.0.0-1+cuda10.2
+#apt-get install --no-install-recommends libnvinfer-dev=6.0.1-1+cuda10.1 libnvinfer6=6.0.1-1+cuda10.1 libnvinfer-plugin6=6.0.1-1+cuda10.1
